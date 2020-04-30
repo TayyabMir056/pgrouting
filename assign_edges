@@ -1,0 +1,40 @@
+CREATE OR REPLACE FUNCTION assign_edges ( tolerance double precision) 
+	RETURNS integer 
+AS $$
+DECLARE 
+	sql_insert VARCHAR(250);
+    rec record;
+BEGIN
+	DROP TABLE if exists routes.tmp_edges_combined;
+	CREATE  TABLE routes.tmp_edges_combined(
+		id integer,
+		geom geometry,
+		floor_id integer
+	);
+	FOR rec IN(
+		SELECT table_name,replace(replace(table_name,'edges_f',''),'_noded','') AS floor_id 
+		FROM information_schema.tables 
+		WHERE table_schema = 'routes'
+		and table_name like '%_noded'
+		)
+ 
+	LOOP		
+        sql_insert := 'INSERT INTO routes.tmp_edges_combined (id,geom,floor_id) SELECT id,the_geom,'||rec.floor_id || ' AS floorid from routes.' || rec.table_name;
+		EXECUTE sql_insert;
+	END LOOP;
+	
+	UPDATE floorplan_ddassetgeom SET edge_id =NULL; 
+	
+	UPDATE floorplan_ddassetgeom f  
+	SET edge_id = 
+		e.id FROM routes.tmp_edges_combined e
+		WHERE st_intersects(e.geom,st_buffer(f.location,0.1))=true
+		AND e.floor_id=f.floor_id;
+	RETURN 1;
+END; $$ 
+LANGUAGE 'plpgsql';
+
+
+--SELECT assign_edges(0.001);
+-- SELECT * FROM routes.tmp_edges_combined;
+-- SELECT * FROM floorplan_ddassetgeom;
