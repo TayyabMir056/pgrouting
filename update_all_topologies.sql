@@ -1,3 +1,5 @@
+-- This function loops through all the existing floor and updates their topologies using the existing Create_topologies Function
+
 CREATE OR REPLACE FUNCTION update_all_topologies (tolerence double precision) 
 	RETURNS integer 
 AS $$
