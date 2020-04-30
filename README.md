@@ -1,14 +1,10 @@
-# pgrouting
-pg routing TSP
-
-
 **Requirements**
 
  - Create a new schema "routes" in the existing db
-		 -All the topologies will be handled in this schema
+	 - All the topologies will be handled in this schema
 	
  - Add a new column "edge_id" integer in existing floorplan_ddassetgeom
-		- This column will be used in validation and to in assign which asset belongs to which line/path/edge
+	 -  This column will be used in validation and to in assign which asset belongs to which line/path/edge
 
 **Instructions**
 Create the functions from the provided files
@@ -22,7 +18,3 @@ Create the functions from the provided files
 	 - and to assign each asset its nearest edge, that will later be used in calculating routes.
 
 **Note: Before Calulating the routes, Make sure the topologies are created by calling the above functions in the mentioned order**
-
- 
-
-
