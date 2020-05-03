@@ -42,7 +42,7 @@ from   (
 	  	--pgr_djikstraCostMatrix
     	''SELECT * FROM pgr_dijkstraCostMatrix(
         ''''SELECT id, source, target, st_length(the_geom) as cost 
-		FROM routes.edges_f1_noded'''',
+		FROM routes.edges_f'||floor_id||'_noded'''',
         (SELECT array_agg(node_id) FROM floorplan_ddassetgeom where id IN ('||asset_ids||') and node_id is not null),
         directed := false)'',
     randomize := false) tsp_result
