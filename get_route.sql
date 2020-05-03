@@ -25,7 +25,7 @@ from   (
            FROM   (
              SELECT e.the_geom as geo
              FROM   pgr_dijkstra(''SELECT id, source, target, 
-								 st_length(the_geom)*random() as cost 
+								 st_length(the_geom) as cost 
 		FROM routes.edges_f1_noded'', orig, dest, false) AS r,
                     routes.edges_f1_noded AS e
              WHERE r.edge = e.id
@@ -37,7 +37,7 @@ from   (
     from  (
       SELECT array_agg(node) myarray FROM pgr_TSP(
     	''SELECT * FROM pgr_dijkstraCostMatrix(
-        ''''SELECT id, source, target, st_length(the_geom)*random() as cost 
+        ''''SELECT id, source, target, st_length(the_geom) as cost 
 		FROM routes.edges_f1_noded'''',
         (SELECT array_agg(e.source) FROM floorplan_ddassetgeom a,routes.edges_f'||floor_id ||'_noded e where a.edge_id=e.id and a.id IN ('||asset_ids||')),
         directed := false)'',
