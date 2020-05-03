@@ -2,10 +2,12 @@
 
 -- DROP FUNCTION public.get_route(integer, character varying);
 
+--SELECT * FROM get_route(1,'12,13,14')
+
 CREATE OR REPLACE FUNCTION public.get_route(
 	floor_id integer,
 	asset_ids character varying)
-    RETURNS TABLE(seq bigint, geom geometry) 
+    RETURNS TABLE(seq bigint, geom geometry, gjson text) 
     LANGUAGE 'plpgsql'
 
     COST 100
@@ -17,7 +19,8 @@ BEGIN
     RETURN QUERY 
 	EXECUTE
 	'select fd.seq as seq,
-       fd.geo as geo
+       fd.geo as geo,
+	   st_astext(fd.geo) as gjson
 from   (
   SELECT ROW_NUMBER() OVER (ORDER BY now() ASC) AS seq,
          (
@@ -39,7 +42,7 @@ from   (
     	''SELECT * FROM pgr_dijkstraCostMatrix(
         ''''SELECT id, source, target, st_length(the_geom) as cost 
 		FROM routes.edges_f1_noded'''',
-        (SELECT array_agg(e.source) FROM floorplan_ddassetgeom a,routes.edges_f'||floor_id ||'_noded e where a.edge_id=e.id and a.id IN ('||asset_ids||')),
+        (SELECT array_agg(node_id) FROM floorplan_ddassetgeom where id IN ('||asset_ids||') and node_id is not null),
         directed := false)'',
     randomize := false) myarray
     ) b
