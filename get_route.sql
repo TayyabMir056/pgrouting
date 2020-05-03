@@ -29,8 +29,8 @@ from   (
              SELECT e.the_geom as geo
              FROM   pgr_dijkstra(''SELECT id, source, target, 
 								 st_length(the_geom) as cost 
-		FROM routes.edges_f1_noded'', orig, dest, false) AS r,
-                    routes.edges_f1_noded AS e
+		FROM routes.edges_f'||floor_id||'_noded'', orig, dest, false) AS r,
+                    routes.edges_f'||floor_id||'_noded AS e
              WHERE r.edge = e.id
            ) AS pgr_djik
          ) AS geo
