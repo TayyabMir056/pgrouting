@@ -13,7 +13,7 @@ CREATE OR REPLACE FUNCTION public.get_fraction_from_asset(
     
 AS $BODY$
 
-SELECT st_lineLocatePoint(geom,p.location) FROM floorplan_ddassetgeom p
+SELECT st_lineLocatePoint(st_lineMerge(geom),p.location) FROM floorplan_ddassetgeom p
 WHERE p.id=point_id
 
 $BODY$;
