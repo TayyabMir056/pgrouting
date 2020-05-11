@@ -19,7 +19,8 @@ DECLARE
 BEGIN
 	
 	sql_set_null:=
-	'UPDATE floorplan_ddassetgeom SET edge_id =NULL, fraction = NULL WHERE floor_id=  '||floor_id; 
+	'UPDATE floorplan_ddassetgeom SET edge_id =NULL WHERE floor_id=  '||floor_id||';
+	UPDATE floorplan_ddassetgeom SET fraction = NULL WHERE floor_id=  '||floor_id||';' ; 
 	
 	sql_update_edge_id:=
 	'UPDATE floorplan_ddassetgeom f
