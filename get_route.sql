@@ -35,7 +35,7 @@ BEGIN
              SELECT e.the_geom as geo
              FROM   pgr_withPoints(
 				 ''SELECT id, source, target, st_length(the_geom) as cost 
-		FROM routes.edges_f'||floor_id||'_noded where souce is not null and target is not null'',
+		FROM routes.edges_f'||floor_id||'_noded where source is not null and target is not null'',
 				 ''SELECT id as pid, edge_id, fraction from floorplan_ddassetgeom WHERE edge_id is not NULL and fraction is not NULL'',
 				 orig, dest, false) AS r,
                     routes.edges_f'||floor_id||'_noded AS e
@@ -51,7 +51,7 @@ BEGIN
 	  	--pgr_djikstraCostMatrix
     	''SELECT * FROM pgr_withPointsCostMatrix(
         ''''SELECT id, source, target, st_length(the_geom) as cost 
-		FROM routes.edges_f'||floor_id||'_noded  where souce is not null and target is not null'''',
+		FROM routes.edges_f'||floor_id||'_noded  where source is not null and target is not null'''',
 		''''SELECT id as pid, edge_id, fraction from floorplan_ddassetgeom WHERE edge_id is not NULL and fraction is not NULL'''',
         ARRAY['||asset_ids||'],
         directed := false)'',
