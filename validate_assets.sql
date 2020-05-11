@@ -28,7 +28,8 @@ BEGIN
 		FROM routes.edges_f'||floor_id||'_noded e
 		WHERE st_intersects(e.the_geom,st_buffer(f.location,'||tolerance||'))=true
 		AND f.floor_id='||floor_id||'
-		ORDER BY  st_distance(e.the_geom,f.location) limit 1 )';
+		ORDER BY  st_distance(e.the_geom,f.location) limit 1 )
+	WHERE f.floor_id='||floor_id;
 	
 	sql_update_fraction:=
 	'UPDATE floorplan_ddassetgeom f
