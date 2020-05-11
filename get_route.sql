@@ -51,7 +51,7 @@ BEGIN
 	  	--pgr_djikstraCostMatrix
     	''SELECT * FROM pgr_withPointsCostMatrix(
         ''''SELECT id, source, target, st_length(the_geom) as cost 
-		FROM routes.edges_f'||floor_id||'_noded WHERE'''',
+		FROM routes.edges_f'||floor_id||'_noded'''',
 		''''SELECT id as pid, edge_id, fraction from floorplan_ddassetgeom WHERE edge_id is not NULL and fraction is not NULL'''',
         ARRAY['||asset_ids||'],
         directed := false)'',
