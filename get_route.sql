@@ -32,7 +32,10 @@ BEGIN
          (
            SELECT (ST_Collect(pgr_djik.geo))
            FROM   (
-             SELECT e.the_geom as geo
+             SELECT CASE
+      WHEN r.node = e.source THEN e.the_geom
+      ELSE ST_Reverse(e.the_geom)
+   END  as geo
              FROM   pgr_withPoints(
 				 ''SELECT id, source, target, st_length(the_geom) as cost 
 		FROM routes.edges_f'||floor_id||'_noded where source is not null and target is not null'',
@@ -65,4 +68,3 @@ $BODY$;
 
 ALTER FUNCTION public.get_route(integer, character varying)
     OWNER TO postgres;
-
